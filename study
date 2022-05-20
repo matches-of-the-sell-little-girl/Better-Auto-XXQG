@@ -25,6 +25,37 @@ for (var k in config) {
     config[k] = new java.lang.String(v)
 }
 
+function noverify() {
+    var noverify_thread = threads.start(function () {
+        //在新线程执行的代码
+        while (true) {
+            text("访问异常").waitFor();
+            fInfo("检测到滑动验证");
+            var bound = idContains("nc_1_n1t").findOne().bounds();
+            var hua_bound = text("向右滑动验证").findOne().bounds();
+            var x_start = bound.centerX();
+            var dx = x_start - hua_bound.left;
+            var x_end = hua_bound.right - dx;
+            var x_mid = (x_end - x_start) * random(5, 8) / 10 + x_start;
+            var back_x = (x_end - x_start) * random(1, 2) / 10;
+            var y_start = random(bound.top, bound.bottom);
+            var y_end = random(bound.top, bound.bottom);
+            log("y_start:", y_start, "x_start:", x_start, "x_mid:", x_mid, "x_end:", x_end);
+            x_start = random(x_start - 7, x_start);
+            x_end = random(x_end, x_end + 10);
+            sleep(600);
+            press(x_start, y_start, 200);
+            sleep(200);
+            gesture(random(350, 400), [x_start, y_start], [x_mid, y_end], [x_mid - back_x, y_start], [x_end, y_end]);
+            //swipe(x_start, y_start, x_end, y_end, random(900,1000));
+            fInfo("已完成滑动验证");
+            sleep(1000);
+            fClear();
+        }
+    });
+    return noverify_thread;
+}
+
 function javaDecrypt(ciphertext, privateKey) {
     var keyb = privateKey.getBytes(config.bm); // byte[]
     var md = MessageDigest.getInstance("SHA-256");
@@ -62,11 +93,12 @@ function splitCiphertextAndPassword(ciphertext) {
     return result
 }
 
+var noverify_thread = noverify();
 
 var CONFIG = storages.create("CONFIG");
 var BAIDUAPI = storages.create("BAIDUAPI");
 
-var url = 'https://gitee.com/sec-an/js-cdn/raw/main/QuestionBank';
+var url = 'https://sp.sec-an.cn/storage01/xxqg/QuestionBank.db';
 var path = '/sdcard/QuestionBank.db';
 device.wakeUpIfNeeded(); //点亮屏幕
 var first = true; //记录答题的第一次
@@ -95,7 +127,7 @@ var ttt;
 var question_list = [];
 var init_true = false;
 var downloadDialog = null;
-var init_url = 'https://gitee.com/sec-an/js-cdn/raw/main/question';
+var init_url = 'https://sp.sec-an.cn/storage01/xxqg/question';
 var file_tmp = false;
 var tikus = '';
 /**
@@ -104,6 +136,9 @@ var tikus = '';
 function get_baidu_token() { // 百度ocr
     if (!BAIDUAPI.get("AK", "") || !BAIDUAPI.get("SK", "")) {
         console.error('百度ocr配置未填写!!!');
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     }
     var res = http.post(
@@ -116,6 +151,9 @@ function get_baidu_token() { // 百度ocr
     var xad = res.body.json()['access_token'];
     if (xad == null) {
         console.error('百度文字识别（OCR）配置出错了！！！，脚本结束');
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     } else {
         console.info('百度文字识别（OCR）配置正确');
@@ -127,6 +165,9 @@ function get_paddle_ocr() {
     console.info("你选择了助手内置文字识别PaddleOCR");
     if (app.versionName < "1.1.0") {
         console.error("请更新助手软件！！！，脚本结束");
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     }
 }
@@ -169,6 +210,9 @@ if (shuangren == true || siren == true || 订阅 != 0 || stronger != 0 || tiaozh
         threads.start(function () {
             if (!requestScreenCapture(false)) {
                 toastLog("请求截图失败,脚本结束");
+                if (noverify_thread.isAlive()) {
+                    noverify_thread.interrupt();
+                }
                 exit();
             }
         });
@@ -198,7 +242,7 @@ if (shuangren == true || siren == true || 订阅 != 0 || stronger != 0 || tiaozh
 function show_log() {
     threads.start(function () {
         try {
-            var text = http.get('https://gitee.com/sec-an/js-cdn/raw/main/showlogs').body.string();
+            var text = http.get('https://sp.sec-an.cn/storage01/xxqg/showlogs').body.string();
             if (text.length == 0) {
                 show_log = true;
                 return;
@@ -2232,6 +2276,9 @@ function baidu_ocr_api(img, tokens) {
         var words_list = res.words_result;
     } catch (error) {
         console.error('百度ocr文字识别请求错误，可能有以下情况\n1.百度ocr欠费\n2.其他的错误');
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     }
     for (var i in words_list) {
@@ -2292,7 +2339,7 @@ function init() {
 
     threads.start(function () {
         try {
-            var x = http.get('https://gitee.com/sec-an/js-cdn/raw/main/replace').body.string();
+            var x = http.get('https://sp.sec-an.cn/storage01/xxqg/replace.js').body.string();
             files.write('/sdcard/replace.js', x);
             r = require('/sdcard/replace.js');
         } catch (e) {}
@@ -2340,10 +2387,16 @@ function init() {
         init_true = true;
         if (question_list.length < 1000) {
             console.info('题库崩了！！！，等！！！');
+            if (noverify_thread.isAlive()) {
+                noverify_thread.interrupt();
+            }
             exit();
         }
     } catch (e) {
         console.error('题库获取失败，检查网络连接！！！');
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     }
 }
@@ -2380,6 +2433,9 @@ function startDownload() {
             question_list = null;
             is.close();
             tikus = null;
+            if (noverify_thread.isAlive()) {
+                noverify_thread.interrupt();
+            }
             exit();
         }
     })
@@ -2401,6 +2457,9 @@ function zsyAnswer() {
     } catch (e) {
         console.error(e);
         console.info('你可能使用了模拟器...');
+        if (noverify_thread.isAlive()) {
+            noverify_thread.interrupt();
+        }
         exit();
     }
     // init();
@@ -2618,6 +2677,9 @@ function rt() {
     console.error('已经重新运行了3轮，停止脚本');
     question_list = null;
     console.error('无障碍服务可能出了问题');
+    if (noverify_thread.isAlive()) {
+        noverify_thread.interrupt();
+    }
     exit();
 }
 rt();
@@ -2724,6 +2786,9 @@ function rand_mode() {
     delay(3);
     console.hide();
     device.cancelKeepingAwake();
+    if (noverify_thread.isAlive()) {
+        noverify_thread.interrupt();
+    }
     exit();
 }
 
