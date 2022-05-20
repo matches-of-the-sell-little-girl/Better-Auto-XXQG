@@ -3,9 +3,8 @@ console.clear();
 http.__okhttp__.setTimeout(10000);
 
 let url = [
-    'https://gitee.com/sec-an/js-cdn/raw/main/UI',
     'https://sp.sec-an.cn/storage01/xxqg/UI.js',
-    'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI',
+    'https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI',
     'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/UI',
     'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/UI',
 ];
