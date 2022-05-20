@@ -30,7 +30,7 @@ function noverify() {
         //在新线程执行的代码
         while (true) {
             text("访问异常").waitFor();
-            fInfo("检测到滑动验证");
+            console.log("检测到滑动验证");
             var bound = idContains("nc_1_n1t").findOne().bounds();
             var hua_bound = text("向右滑动验证").findOne().bounds();
             var x_start = bound.centerX();
@@ -48,9 +48,8 @@ function noverify() {
             sleep(200);
             gesture(random(350, 400), [x_start, y_start], [x_mid, y_end], [x_mid - back_x, y_start], [x_end, y_end]);
             //swipe(x_start, y_start, x_end, y_end, random(900,1000));
-            fInfo("已完成滑动验证");
+            console.log("已完成滑动验证");
             sleep(1000);
-            fClear();
         }
     });
     return noverify_thread;
