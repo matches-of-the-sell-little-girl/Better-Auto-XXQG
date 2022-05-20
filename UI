@@ -374,7 +374,7 @@ ui.start.click(function () {
     threads.start(function () {
         let url = [
             'https://sp.sec-an.cn/storage01/xxqg/study.js',
-            'https://github.secan.workers.dev/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study',
+            'https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study',
             'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/study',
             'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study'
         ];
