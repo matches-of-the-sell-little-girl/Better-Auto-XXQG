@@ -29,27 +29,43 @@ function noverify() {
     var noverify_thread = threads.start(function () {
         //在新线程执行的代码
         while (true) {
-            text("访问异常").waitFor();
-            console.log("检测到滑动验证");
+            textContains("访问异常").waitFor();
+            fInfo("检测到滑动验证");
+            if (!Number(slide_verify)) {
+                fInfo("未开启自动验证");
+                break
+            } else {
+                var delay = Number(slide_verify);
+            }
             var bound = idContains("nc_1_n1t").findOne().bounds();
             var hua_bound = text("向右滑动验证").findOne().bounds();
             var x_start = bound.centerX();
             var dx = x_start - hua_bound.left;
             var x_end = hua_bound.right - dx;
             var x_mid = (x_end - x_start) * random(5, 8) / 10 + x_start;
-            var back_x = (x_end - x_start) * random(1, 2) / 10;
+            var back_x = (x_end - x_start) * random(2, 3) / 10;
             var y_start = random(bound.top, bound.bottom);
             var y_end = random(bound.top, bound.bottom);
             log("y_start:", y_start, "x_start:", x_start, "x_mid:", x_mid, "x_end:", x_end);
             x_start = random(x_start - 7, x_start);
             x_end = random(x_end, x_end + 10);
-            sleep(600);
-            press(x_start, y_start, 200);
-            sleep(200);
-            gesture(random(350, 400), [x_start, y_start], [x_mid, y_end], [x_mid - back_x, y_start], [x_end, y_end]);
+            //       sleep(600);
+            //       press(x_start, y_start, 200);
+            //       sleep(200);
+            gesture(random(delay, delay + 50), [x_start, y_start], [x_mid, y_end], [x_mid - back_x, y_start], [x_end, y_end]);
             //swipe(x_start, y_start, x_end, y_end, random(900,1000));
-            console.log("已完成滑动验证");
+            sleep(500);
+            if (textContains("刷新").exists()) {
+                click("刷新");
+                continue;
+            }
+            if (textContains("网络开小差").exists()) {
+                click("确定");
+                continue;
+            }
+            fInfo("已完成滑动验证，若滑动失败请在Pro版配置中调整滑动时间");
             sleep(1000);
+            fClear();
         }
     });
     return noverify_thread;
