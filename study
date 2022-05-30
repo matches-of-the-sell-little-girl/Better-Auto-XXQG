@@ -30,13 +30,8 @@ function noverify() {
         //在新线程执行的代码
         while (true) {
             textContains("访问异常").waitFor();
-            fInfo("检测到滑动验证");
-            if (!Number(slide_verify)) {
-                fInfo("未开启自动验证");
-                break
-            } else {
-                var delay = Number(slide_verify);
-            }
+            console.log("检测到滑动验证");
+            var delay = 300;
             var bound = idContains("nc_1_n1t").findOne().bounds();
             var hua_bound = text("向右滑动验证").findOne().bounds();
             var x_start = bound.centerX();
@@ -63,9 +58,8 @@ function noverify() {
                 click("确定");
                 continue;
             }
-            fInfo("已完成滑动验证，若滑动失败请在Pro版配置中调整滑动时间");
+            console.log("已完成滑动验证，若滑动失败请在Pro版配置中调整滑动时间");
             sleep(1000);
-            fClear();
         }
     });
     return noverify_thread;
