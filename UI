@@ -284,8 +284,8 @@ var thread = null;
 Initialize();
 
 // 版本更新检查
-var apkurl = "https://sp.sec-an.cn/storage01/xxqg/v2.0.3.apk";
-var latest_version = "2.0.3";
+var apkurl = "https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/v1.1.1.apk";
+var latest_version = "1.1.1";
 if (CONFIG.get("NO_UPDATE", 0) && (app.versionName != latest_version)) {
     ui.update.visibility = 0;
     ui.update.setText("点击更新至最新版v" + latest_version);
@@ -310,7 +310,7 @@ ui.emitter.on("options_item_selected", (e, item)=>{
             alert("关于", decodeURI("%E5%BC%BA%E5%9B%BD%E5%8A%A9%E6%89%8B%20v")+latest_version);
             break;
         case "Github":
-            app.openUrl("https://github.com/sec-an/Better-Auto-XXQG");
+            app.openUrl("https://www.baidu.com");
             break;
     }
     e.consumed = true;
@@ -373,10 +373,7 @@ ui.start.click(function () {
     }
     threads.start(function () {
         let url = [
-            'https://sp.sec-an.cn/storage01/xxqg/study.js',
-            'https://ghproxy.com/https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study',
-            'https://cdn.jsdelivr.net/gh/sec-an/Better-Auto-XXQG@main/study',
-            'https://raw.githubusercontent.com/sec-an/Better-Auto-XXQG/main/study'
+            'https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/study'
         ];
         for (var i = 0; i < url.length; i++) {
             try {

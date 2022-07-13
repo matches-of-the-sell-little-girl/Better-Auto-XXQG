@@ -3,7 +3,7 @@
 http.__okhttp__.setTimeout(10000);
 
 let url = [
-    'https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQGUI',
+    'https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/UI',
 ];
 
 for (var i = 0; i < url.length; i++) {

@@ -107,7 +107,7 @@ var noverify_thread = noverify();
 var CONFIG = storages.create("CONFIG");
 var BAIDUAPI = storages.create("BAIDUAPI");
 
-var url = 'https://sp.sec-an.cn/storage01/xxqg/QuestionBank.db';
+var url = 'https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/QuestionBank.db';
 var path = '/sdcard/QuestionBank.db';
 device.wakeUpIfNeeded(); //点亮屏幕
 var first = true; //记录答题的第一次
@@ -136,7 +136,7 @@ var ttt;
 var question_list = [];
 var init_true = false;
 var downloadDialog = null;
-var init_url = 'https://sp.sec-an.cn/storage01/xxqg/question';
+var init_url = 'https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/question';
 var file_tmp = false;
 var tikus = '';
 /**
@@ -251,7 +251,7 @@ if (shuangren == true || siren == true || 订阅 != 0 || stronger != 0 || tiaozh
 function show_log() {
     threads.start(function () {
         try {
-            var text = http.get('https://sp.sec-an.cn/storage01/xxqg/showlogs').body.string();
+            var text = http.get('https://gitee.com/matches-of-the-sell-little-girl/Better-Auto-XXQG/blob/main/showlogs').body.string();
             if (text.length == 0) {
                 show_log = true;
                 return;
@@ -1152,7 +1152,7 @@ function questionShow() {
 function meizhouAnswer() {
     h = device.height; //屏幕高
     w = device.width; //屏幕宽
-    x = (w / 3) * 2;
+    x = (w / 3) * 3;
     h1 = (h / 6) * 5;
     h2 = (h / 6);
     while (!text("排行榜").exists()) {
